@@ -14,3 +14,5 @@ Contributors:
 
 
 ## Description of the app & initial sketch
+![](img/home.png)
+![](img/details.png)
