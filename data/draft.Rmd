@@ -14,7 +14,7 @@ library(tidytext)
 library(tidyverse)
 library(plotly)
 
-df <- read.csv("mental-heath-in-tech_working_copy.csv")
+df <- read.csv("../data/mental-heath-in-tech.csv", stringsAsFactors = FALSE)
 ```
 
 ```{r }
@@ -141,4 +141,27 @@ main_conditions <- df_1 %>%
 plot1_filtered  <-df %>%      
                               filter(Age > input$age[1],  # lower limit in slidebar
                                      Age < input$age[2])
+```
+
+```{r}
+library(scales)
+(pie <- df %>%
+   group_by(wrk_interference_when_treated)%>%
+   summarise(count=n())%>%
+   ggplot(aes(x="", y=count, fill=wrk_interference_when_treated))+
+   geom_bar(width = 1, stat = "identity")+
+   coord_polar("y", start=0)+
+   scale_fill_brewer(palette="Grays")
+   
+ )
+
+(pie2 <- df %>%
+   group_by(wrk_interference_No_treatement)%>%
+   summarise(count=n())%>%
+   ggplot(aes(x="", y=count, fill=wrk_interference_No_treatement))+
+   geom_bar(width = 1, stat = "identity")+
+   coord_polar("y", start=0)+
+   scale_fill_brewer(palette="Blues")
+   
+ )
 ```
