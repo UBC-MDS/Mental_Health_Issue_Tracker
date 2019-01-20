@@ -1,0 +1,12 @@
+name: mental_health_issue_tracker
+title: mental_health_issue_tracker
+username:
+account: marcelle-sayanti
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 656037
+bundleId: 1824724
+url: https://marcelle-sayanti.shinyapps.io/mental_health_issue_tracker/
+when: 1547946551.13941
+asMultiple: FALSE
+asStatic: FALSE

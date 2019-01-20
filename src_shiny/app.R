@@ -14,7 +14,7 @@ library(tidytext)
 library(plotly)
 library(gridExtra)
 
-df <- read.csv("../data/mental-heath-in-tech.csv", stringsAsFactors = FALSE)
+df <- read.csv("data/mental-heath-in-tech.csv", stringsAsFactors = FALSE)
 
 countries <- as.list(unique(df$work_country))
 
@@ -111,7 +111,7 @@ server <- function(input, output) {
       geom_bar(stat = "count", position = position_dodge(), fill = "#99e8ff") +
 #      geom_text(stat = "count", aes(label = ..count..), vjust = -0.4, colour = "black") +
       labs(x = "",
-           y = "QTY") +
+           y = "Quantity") +
       theme_bw() +
       ggtitle("Fear of discussing mental health disorder w/ employer") +
       theme(plot.title = element_text(hjust = 0.5))
