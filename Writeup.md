@@ -7,7 +7,7 @@ Contributors:
 
 ### Application walkthrough .
 
-Our foundation to set-up this app is to give user an overview of the data with Summary of the awareness among employees and also to look in Detail and analyze the data which will help the user to build a plan to mitigate the challenge. 
+Our foundation to set-up this ![app](https://marcelle-sayanti.shinyapps.io/mental_health_issue_tracker/) is to give user an overview of the data with Summary of the awareness among employees and also to look in Detail and analyze the data which will help the user to build a plan to mitigate the challenge. 
 
 #### Tab Rationale :  
 
