@@ -28,7 +28,7 @@ Mental health has adverse effect in work and performance of employees . To under
 
 To see the raw data which contains the survey responses for detail analysis . 
 
-**Variable Description **  
+**Variable Description**  
 
 | Name of variable| Description |
 |-----------------|-------------|
@@ -45,7 +45,7 @@ To see the raw data which contains the survey responses for detail analysis .
 
 ![](img/Data.PNG)
 
-#### Filter Rational: 
+#### Filter Rationale: 
 
 The filters are required to know which specific age group has and the work country they belong . All the plots in every tab is interactive  except the wordcloud . This will help user to target specific group and country to understand the situation and get overview of the data .
 Image of filter .
