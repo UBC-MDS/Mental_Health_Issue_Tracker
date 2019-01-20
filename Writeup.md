@@ -14,17 +14,17 @@ Our foundation to set-up this app is to give user an overview of the data with S
 **Overview :**   
 Our landing page gives the most occurred mental health among the employees in the form of word cloud , we implemented wordcloud2 which shows the highest occurring mental health disorder   . Along with that for the employer to get clear idea about awareness among the employees regarding the benefit options given by organization for mental health we generated a plot with count of employees with respect to their awareness . We used bar plots to provide the visual. We believe that awareness could be raised only if people are not afraid to communicate and reach out , hence to visualize how much employees are comfortable to reach out to help by communicating with the employer we developed a bar plot with the count of employees with respect to their comfort level to communicate with employer regarding their mental health issue . 
 
-![](img/Overview.png)
+![](img/Overview.PNG)
 
 **Detail :**  
 Analyzing the data to know more about the employee’s past and present health diagnoses is as important as to know if they have been treated clinically. This will give the employer the information how many of employees need more encouragement to seek professional help . to visualize these we developed two charts , one which depicts employee with medical illness history with respect to if they have been clinically diagnosed.Another chart depicts medical history with respect to if they are getting professional help . 
 
 Mental health has adverse effect in work and performance of employees . To understand that we developed two charts , one which depicts how much mental health disorder interferes with work when treated by professional , another how much it effect when not treated by professional. Both the charts are bar charts giving the count of responses of employees depicting the interference of mental health issue in their work. 
 
-![](img/Detail.png)
+![](img/Detail.PNG)
 
 
-**Data : **  
+**Data :**  
 
 To see the raw data which contains the survey responses for detail analysis . 
 
@@ -43,14 +43,14 @@ To see the raw data which contains the survey responses for detail analysis .
 |wrk_interference_No_treatement|How much your mental health issue effects your work when not  treated by professional ?|
 |MHD|Presence of mental health disorder in past and present /past or present /only past /only present / not applicable.|
 
-![](img/Data.png)
+![](img/Data.PNG)
 
 #### Filter Rational: 
 
 The filters are required to know which specific age group has and the work country they belong . All the plots in every tab is interactive  except the wordcloud . This will help user to target specific group and country to understand the situation and get overview of the data .
 Image of filter .
 
-![](img/Filter.png)
+![](img/Filter.PNG)
 
 #### Future Vision :   
 
