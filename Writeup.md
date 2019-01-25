@@ -52,6 +52,10 @@ Image of filter .
 
 ![](img/Filter.PNG)
 
+#### Bug :
+
+When the app is first loaded the second plot on right side does not show up sometimes . Once any filter is selected it shows up and works fine . We need to fix it in next milestone. 
+
 #### Future Vision :   
 
 Our plan was to make the word cloud interactive but we could not do it due to technical difficulties . Also for next milestone we will combine two chart of work interference with treatment  and without treatment in tab Detail  , so that it becomes visually better for user to understand .We will enhance the colors of the plots to match with the theme . Also we will add loading spinners . We wanted to have different filters for different tab , but could not do it for technical difficulties. 

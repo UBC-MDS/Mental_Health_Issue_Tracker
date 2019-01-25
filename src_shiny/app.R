@@ -16,7 +16,7 @@ library(gridExtra)
 library(shinythemes)
 library(DT)
 
-df <- read.csv("../data/mental-heath-in-tech.csv", stringsAsFactors = FALSE)
+df <- read.csv("data/mental-heath-in-tech.csv", stringsAsFactors = FALSE)
 
 countries <- as.list(unique(df$work_country))
 
