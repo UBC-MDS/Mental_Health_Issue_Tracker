@@ -120,116 +120,106 @@ server <- function(input, output) {
                             filter(between(Age, input$age[1], input$age[2]),
                                    work_country==input$countryInput))
   
-  
-  word_cloud <- main_conditions %>%
-#    filter(Age > input$ageInput[1], Age < input$ageInput[2]) %>% 
-#    filter(work_country %in% input$workCountries) %>% 
-    count(Condition) %>% 
+
+  word_cloud <- reactive(main_conditions %>% 
+    filter(between(Age, input$age[1], input$age[2]), work_country == input$countryInput) %>% 
+    count(Condition) %>%
     setNames(c("word", "freq")) %>%
-    mutate(freq = log(freq)) %>% 
+    mutate(freq = log(freq + 1)) %>% 
     arrange(desc(freq))
-  
-  #Test start
-  x<-reactive(main_conditions %>% 
-    group_by(Condition,Age,work_country)%>%
-    count(Condition)%>%
-    filter(between(Age, input$age[1], input$age[2]),
-           work_country==input$countryInput))
-           
-  View(x)
-  #Test end 
+  )
   
   output$wordplot <- renderWordcloud2(
-    word_cloud %>%
-    #x()%>%    # Uncomment to make it interactive and comment previous line .
+    word_cloud() %>%
     wordcloud2(size = 0.32, minRotation = 0, maxRotation = 0, 
-               shape = "circle",fontWeight = "normal" ,fontFamily = "CMU Sans Serif",color="random-dark"))
+               shape = "circle", fontWeight = "normal", fontFamily = "CMU Sans Serif", color="random-dark"))
   
   output$help <- renderPlot(
     plot1_filtered()%>%
     ggplot(aes(x = options_for_seeking_help)) +
-#     geom_bar(stat = "count", position = position_dodge(), fill = "#99e8ff") +
-      geom_bar(stat = "count", position = position_dodge(), fill = "skyblue4") +         #chganed the color
-#      geom_text(stat = "count", aes(label = ..count..), vjust = -0.4, colour = "black") +
-      labs(x = "Suervey respose",
-           y = "Count") +
+      geom_bar(stat = "count", position = position_dodge(), fill = "skyblue4") +
+      geom_text(stat = "count", aes(label = ..count..), position = position_stack(0.5), colour = "black") +
+      labs(y = "Count") +
       theme_bw()+
-      theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +      #Removed grid
+      theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
       ggtitle("Awareness of options for seeking help") +
-      theme(plot.title = element_text(hjust = 0.5))
+      theme(plot.title = element_text(size = 14, face = "bold", hjust = 0.5)) +
+      theme(axis.text = element_text(size = 14),
+            axis.title = element_text(size = 14,face="bold")) + 
+      theme(legend.text=element_text(size = 12))
   )
-  
-
-  
-#  output$scary <- renderPlot(
-#    plot(1,1)
-#     plot1_filtered()%>%
-#     ggplot(aes(x = scared_of_discussing_with_employer)) +
-#       geom_bar(stat = "count", position = position_dodge(), fill = "skyblue4") +       #changed color
-# #      geom_text(stat = "count", aes(label = ..count..), vjust = -0.4, colour = "black") +
-#       labs(x = "Survey response",
-#            y = "Count") +
-#       theme_bw() +
-#       theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())+     #Removed grid
-#       ggtitle("Fear of discussing mental health disorder with employer") +
-#       theme(plot.title = element_text(hjust = 0.5))
-#    )
 
 # Details' charts  
   output$MHID <- renderPlot(
     plot1_filtered()%>%
     ggplot(aes(x = MHD, fill = Treatment_sought)) +
       geom_bar(stat = "count") +
+      geom_text(stat = "count", aes(label = ..count..), position = position_stack(0.5) , colour = "black") +
       guides(fill = guide_legend(reverse = TRUE)) +
- #   scale_fill_brewer(palette = "Pastel1") +
       scale_fill_manual(values = alpha(c("lightblue","steelblue4")))+
       labs(x = "History of mental health disorder",
            y = "Count") +
       theme_bw() +
       theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())+     #Removed grid
       ggtitle("Sought professional help for mental health") +
-      theme(plot.title = element_text(hjust = 0.5))
+      theme(plot.title = element_text(size = 14, face = "bold", hjust = 0.5)) +
+      theme(axis.text.x = element_text(size = 14, angle = 25, vjust = 1),
+            axis.text.y = element_text(size = 14),
+            axis.title = element_text(size = 14,face = "bold")) + 
+      theme(legend.text = element_text(size = 12)) 
     )
   
   output$diagnosis <- renderPlot(
     plot1_filtered()%>%
     ggplot(aes(x = MHD, fill = Clinically_diagnosed)) +
       geom_bar(stat = "count") +
+      geom_text(stat = "count", aes(label = ..count..), position = position_stack(0.5), colour = "black") +
       guides(fill = guide_legend(reverse = TRUE)) +
-  #   scale_fill_brewer(palette = "Pastel1") +
       scale_fill_manual(values = alpha(c("lightblue","steelblue4")))+
       labs(x = "History of mental health disorder",
            y = "Count") +
       theme_bw() +
       theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())+     #Removed grid
       ggtitle("Clinically diagnosed with a mental health disorder") +
-      theme(plot.title = element_text(hjust = 0.5))
+      theme(plot.title = element_text(size = 14, face = "bold", hjust = 0.5)) +
+      theme(axis.text.x = element_text(size = 14, angle = 25, vjust = 1),
+            axis.text.y = element_text(size = 14),
+            axis.title = element_text(size = 14,face="bold")) + 
+      theme(legend.text = element_text(size = 12))
     )
   
   output$working_impact1 <- renderPlot(
     plot1_filtered()%>%
     ggplot(aes(x = wrk_interference_when_treated)) +
       geom_bar(stat = "count", position = position_dodge(), fill = "lightsteelblue3") +
-      geom_text(stat = "count", aes(label = ..count..), vjust = -0.4, colour = "black") +
+      geom_text(stat = "count", aes(label = ..count..), position = position_stack(0.5), colour = "black") +
       labs(x = "Effect in work",
            y = "Count") +
       theme_bw() +
       theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())+
       ggtitle("Working interference when treated") +
-      theme(plot.title = element_text(hjust = 0.5))
+      theme(plot.title = element_text(size = 14, face = "bold", hjust = 0.5)) +
+      theme(axis.text.x = element_text(size = 14, angle = 25, vjust = 1),
+            axis.text.y = element_text(size = 14),
+            axis.title = element_text(size = 14,face = "bold")) + 
+      theme(legend.text = element_text(size = 12))
     )
   
   output$working_impact2 <- renderPlot(
     plot1_filtered()%>%
     ggplot(aes(x = wrk_interference_No_treatement)) +
       geom_bar(stat = "count", position = position_dodge(), fill = "lightsteelblue3") +
-      geom_text(stat = "count", aes(label = ..count..), vjust = -0.4, colour = "black") +
+      geom_text(stat = "count", aes(label = ..count..), position = position_stack(0.5), colour = "black") +
       labs(x = "Effect in work",
            y = "Count") +
-      theme_bw() +
-      theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())+
       ggtitle("Working interference when not treated") +
-      theme(plot.title = element_text(hjust = 0.5))
+      theme_bw() +
+      theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
+      theme(plot.title = element_text(size = 14, face = "bold", hjust = 0.5)) +
+      theme(axis.text.x = element_text(size = 14, angle = 25, vjust = 1),
+            axis.text.y = element_text(size = 14),
+            axis.title = element_text(size = 14,face ="bold")) + 
+      theme(legend.text = element_text(size = 12))
      ) 
   
   output$table <- renderTable(plot1_filtered() #Data
