@@ -14,18 +14,26 @@ library(tidytext)
 library(plotly)
 library(gridExtra)
 library(shinythemes)
+library(DT)
 
 df <- read.csv("../data/mental-heath-in-tech.csv", stringsAsFactors = FALSE)
 
 countries <- as.list(unique(df$work_country))
 
+
 # Define UI for application that draws a histogram
 ui <- fluidPage(theme=shinytheme("lumen"),
-  titlePanel("Mental Health Issue Tracker"),
+  titlePanel("Mental Health Issue Tracker for Tech company"),
   sidebarLayout(
     sidebarPanel(width = 3,
+                tags$head(tags$style("#textOutput{color: red;
+                             font-size: 20px;
+                                      font-style: italic;
+                                      }"
+                     )
+                 ),
       sliderInput("age", "Age",
-                  min = 10, max = 100, value = c(15, 30)
+                  min = 10, max = 100, value = c(20, 35)
       ),
       selectInput("countryInput", label = "Country",
                   choices = countries,
@@ -34,23 +42,42 @@ ui <- fluidPage(theme=shinytheme("lumen"),
     ),
     mainPanel(width = 8,
       tabsetPanel(type="tabs",
-                  tabPanel("Overview",
-                           wordcloud2Output("wordplot", width = "106%", height = "390px"),
+                  tabPanel("Usage",align="left",tags$hr(),
+                           h3("Motivation:", 
+                           style ="font-weight:bold; color:grey"),
+                           p('This app is build for tech employers to understand how much the employees are aware of benefits given to them for mental health issue. This gives the visualisation of survey data which helps employer to decide what should be the enhancement in benefits , awareness methods and changes in company policies in regards of mental health issues.'),tags$hr(),
+                           h3("Overview Tab:", 
+                              style ="font-weight:bold; color:grey"),
+                           p('This shows the most prevalent mental helath conditions diagnosed among employers. Also it shows how many employers are aware of mental health benefits provided by the company. This can be filtered with respect to Age and Country.'),tags$hr(),
+                           h3("Analysis Tab:", 
+                              style ="font-weight:bold; color:grey"),
+                           p('This shows mental history and current state of health with respect to treatment sught from professional and how many employees are diagnosed by prefoessionals.This tab enables employers to notice how much the health issue is affecting their performance when treated compared to when they do not receive any treatment.All information could be filetered by Age and Country of their work.'),tags$hr(),                            
+                          h3("Data Tab:", 
+                              style ="font-weight:bold; color:grey"),
+                           p('Overview of the raw data with respect to the filter applied.'),tags$hr()
+                           
+                  ),
+                  tabPanel("Overview",align="center",h3("...   Most prevalent conditions diagnosed were ...", 
+                                                        style ="font-weight:bold; color:grey"),
+                           wordcloud2Output("wordplot", width = "80%", height = "300px"),
+                           tags$hr(),
                            fluidRow(
-                             splitLayout(cellWidths = c("50%", "50%"),
-                                         plotOutput("help",width = "100%",height = "360px"),
-                                         plotOutput("scary",width = "100%",height = "360px")
+                             splitLayout(#cellWidths = c("50%", "50%"),
+                                         #plotOutput("scary",width = "100%",height = "360px"),
+                                         plotOutput("help",width = "70%",height = "360px")
+                                         
                                          )
                                            
                            )
                   ),
                            
-                  tabPanel("Details",
+                  tabPanel("Analysis",
                            fluidRow(
                              splitLayout(cellWidths = c("50%", "50%"), 
                                          plotOutput("MHID",width = "100%",height = "360px"), 
                                          plotOutput("diagnosis",width = "100%",height = "360px"))
                            ),
+                           tags$hr(),
                            fluidRow(
                            splitLayout(cellWidths = c("50%", "50%"), 
                                        plotOutput("working_impact1",width = "75%",height = "375px"), 
@@ -58,7 +85,8 @@ ui <- fluidPage(theme=shinytheme("lumen"),
                            )
                   ),
                   tabPanel("Data",
-                           tableOutput("table")
+                           #tableOutput("table")
+                           DT::dataTableOutput("mytable")
                              
                            
                   )
@@ -100,12 +128,22 @@ server <- function(input, output) {
     setNames(c("word", "freq")) %>%
     mutate(freq = log(freq)) %>% 
     arrange(desc(freq))
-
+  
+  #Test start
+  x<-reactive(main_conditions %>% 
+    group_by(Condition,Age,work_country)%>%
+    count(Condition)%>%
+    filter(between(Age, input$age[1], input$age[2]),
+           work_country==input$countryInput))
+           
+  View(x)
+  #Test end 
   
   output$wordplot <- renderWordcloud2(
     word_cloud %>%
+    #x()%>%    # Uncomment to make it interactive and comment previous line .
     wordcloud2(size = 0.32, minRotation = 0, maxRotation = 0, 
-               shape = "diamond",fontWeight = "normal" ,fontFamily = "CMU Sans Serif",color="random-dark"))
+               shape = "circle",fontWeight = "normal" ,fontFamily = "CMU Sans Serif",color="random-dark"))
   
   output$help <- renderPlot(
     plot1_filtered()%>%
@@ -123,18 +161,19 @@ server <- function(input, output) {
   
 
   
-  output$scary <- renderPlot(
-    plot1_filtered()%>%
-    ggplot(aes(x = scared_of_discussing_with_employer)) +
-      geom_bar(stat = "count", position = position_dodge(), fill = "skyblue4") +       #changed color
-#      geom_text(stat = "count", aes(label = ..count..), vjust = -0.4, colour = "black") +
-      labs(x = "Survey response",
-           y = "Count") +
-      theme_bw() +
-      theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())+     #Removed grid
-      ggtitle("Fear of discussing mental health disorder with employer") +
-      theme(plot.title = element_text(hjust = 0.5))
-    )
+#  output$scary <- renderPlot(
+#    plot(1,1)
+#     plot1_filtered()%>%
+#     ggplot(aes(x = scared_of_discussing_with_employer)) +
+#       geom_bar(stat = "count", position = position_dodge(), fill = "skyblue4") +       #changed color
+# #      geom_text(stat = "count", aes(label = ..count..), vjust = -0.4, colour = "black") +
+#       labs(x = "Survey response",
+#            y = "Count") +
+#       theme_bw() +
+#       theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())+     #Removed grid
+#       ggtitle("Fear of discussing mental health disorder with employer") +
+#       theme(plot.title = element_text(hjust = 0.5))
+#    )
 
 # Details' charts  
   output$MHID <- renderPlot(
@@ -194,9 +233,10 @@ server <- function(input, output) {
      ) 
   
   output$table <- renderTable(plot1_filtered() #Data
-                              
-  )
-
+                                )
+  output$mytable = DT::renderDataTable({
+    plot1_filtered()
+  })
   
 }
 
