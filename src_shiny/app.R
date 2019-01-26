@@ -19,7 +19,7 @@ library(shinyjs)
 
 df <- read.csv("data/mental-heath-in-tech.csv", stringsAsFactors = FALSE)
 
-countries <- as.list(unique(df$work_country))
+countries <- as.list(unique(arrange(df, work_country)$work_country))
 
 
 # Define UI for application that draws a histogram
@@ -36,11 +36,11 @@ ui <- fluidPage(
                      )
                  ),
       sliderInput("age", "Age",
-                  min = 10, max = 100, value = c(20, 46)
+                  min = 10, max = 100, value = c(20, 45)
       ),
       selectInput("countryInput", label = "Country",
-                  choices = countries,
-                  selected = "United States of America")
+                  choices = c('All', countries),
+                  selected = 'All')
       
     ),
     mainPanel(width = 8,
@@ -63,7 +63,7 @@ ui <- fluidPage(
                            p('Overview of the raw data with respect to the filter applied.'),tags$hr()
                            
                   ),
-                  tabPanel("Overview",align="center",h3("...   Most prevalent conditions diagnosed were ...", 
+                  tabPanel("Overview",align="center",h3("The most prevalent conditions diagnosed were...", 
                                                         style ="font-weight:bold; color:grey"),
                            wordcloud2Output("wordplot", width = "80%", height = "300px"),
                            tags$hr(),
@@ -122,12 +122,12 @@ server <- function(input, output) {
   
   
   plot1_filtered  <-reactive(data %>%      
-                            filter(between(Age, input$age[1], input$age[2]),
-                                   work_country==input$countryInput))
+                               filter(between(Age, input$age[1], input$age[2]),
+                                      input$countryInput == 'All' | work_country==input$countryInput))
   
 
   word_cloud <- reactive(main_conditions %>% 
-    filter(between(Age, input$age[1], input$age[2]), work_country == input$countryInput) %>% 
+    filter(between(Age, input$age[1], input$age[2]), input$countryInput == 'All' | work_country==input$countryInput) %>% 
     count(Condition) %>%
     setNames(c("word", "freq")) %>%
     mutate(freq = log(freq + 1)) %>% 

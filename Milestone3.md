@@ -14,7 +14,7 @@ During the feedback session, our app was reviewed by two teams, following three 
 2. **Informed-run**: The reviewers continued to explore the app, but this time with input from us.
 3. **Written + Oral feedback**: We discussed the feedback with the reviewers and turned it into action items, captured on a GitHub issue.
 
-This experience was very valuable, since it allowed us to noticed how a user, who is not familiar with the app, would interact with it.
+This experience was very valuable, since it allowed us to notice how a user, who is not familiar with the app, would interact with it.
 
 During the Fly-on-the-wall phase, we got great insight into which of our visualizations were more or less intuitive. We could
 also observe whether users would run into the known issues we had, which helped us assess their impact.
@@ -51,7 +51,9 @@ We added the usage tab as suggested, to help guide a user through the visualizat
 Finally, we focused on improving the visualizations of the app. We followed the suggestion of converting the table in the
 *Data* tab to a `DataTable`, which made it more readable, interactive, and searchable. We also improved all of our charts, customizing the fonts and font sizes for axis labels and titles, and also adding data labels to all plots.
 
-In the end, the only two points we didn't address from the feedback we received were the last two – *display the number of people surveyed with the filter options*, and *change the default values for the age slider to be appropriate for tech companies*. While the first felt like it would be nice to have, it didn't feel as high priority as the others, so we left it as something that could be improved in a later version. As to the second, we felt that our choice (20 to 35) was appropriate, so we kept it.
+In the end, the only two points we didn't address from the feedback we received were the last two – *display the number of people surveyed with the filter options*, and *change the default values for the age slider to be appropriate for tech companies*. While the first felt like it would be nice to have, it didn't feel as high priority as the others, so we left it as something that could be improved in a later version. As to the second, we felt that our choice (20 to 45) was appropriate, so we kept it.
+
+We made two other changes which was not given as feedback , but we felt necessary . One , to remove the filters from *Usage* tab as it was not required . Second,removing one of the plot from our *Overview* tab which was showing "How much employees are open to talk to their employers regarding their mental health issue". The rationale behind removing the plot is , it is possible employees are awrae of benefits but not comfortable discussing about their mental health . It is a fair choice of an individual that they would like to discuss about personal issues or not . That does not imply they are scared of discussing or unaware. Also taking initiaives for making people talk about it within organisation might not give any advantage to employers as it might get interpreted as interference given the sensitivity of the subject . Hence , we removed the plot.
 
 ### Reflection on how the project changed since Milestone 2
 
