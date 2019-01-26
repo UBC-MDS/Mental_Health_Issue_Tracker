@@ -15,6 +15,7 @@ library(plotly)
 library(gridExtra)
 library(shinythemes)
 library(DT)
+library(shinyjs)
 
 df <- read.csv("data/mental-heath-in-tech.csv", stringsAsFactors = FALSE)
 
@@ -22,7 +23,9 @@ countries <- as.list(unique(df$work_country))
 
 
 # Define UI for application that draws a histogram
-ui <- fluidPage(theme=shinytheme("lumen"),
+ui <- fluidPage(
+  useShinyjs(),
+  theme=shinytheme("lumen"),
   titlePanel("Mental Health Issue Tracker for Tech company"),
   sidebarLayout(
     sidebarPanel(width = 3,
@@ -33,16 +36,19 @@ ui <- fluidPage(theme=shinytheme("lumen"),
                      )
                  ),
       sliderInput("age", "Age",
-                  min = 10, max = 100, value = c(20, 35)
+                  min = 10, max = 100, value = c(20, 46)
       ),
       selectInput("countryInput", label = "Country",
                   choices = countries,
-                  selected = 1)
+                  selected = "United States of America")
       
     ),
     mainPanel(width = 8,
-      tabsetPanel(type="tabs",
-                  tabPanel("Usage",align="left",tags$hr(),
+      tabsetPanel(type="tabs",id="tab",
+                  tabPanel("Usage",
+                           align="left",
+                           tags$hr(),
+                 
                            h3("Motivation:", 
                            style ="font-weight:bold; color:grey"),
                            p('This app is build for tech employers to understand how much the employees are aware of benefits given to them for mental health issue. This gives the visualisation of survey data which helps employer to decide what should be the enhancement in benefits , awareness methods and changes in company policies in regards of mental health issues.'),tags$hr(),
@@ -74,8 +80,8 @@ ui <- fluidPage(theme=shinytheme("lumen"),
                   tabPanel("Analysis",
                            fluidRow(
                              splitLayout(cellWidths = c("50%", "50%"), 
-                                         plotOutput("MHID",width = "100%",height = "360px"), 
-                                         plotOutput("diagnosis",width = "100%",height = "360px"))
+                                         plotOutput("MHID",width = "100.01%",height = "360px"), 
+                                         plotOutput("diagnosis",width = "100.01%",height = "360px"))
                            ),
                            tags$hr(),
                            fluidRow(
@@ -85,7 +91,6 @@ ui <- fluidPage(theme=shinytheme("lumen"),
                            )
                   ),
                   tabPanel("Data",
-                           #tableOutput("table")
                            DT::dataTableOutput("mytable")
                              
                            
@@ -139,7 +144,8 @@ server <- function(input, output) {
     ggplot(aes(x = options_for_seeking_help)) +
       geom_bar(stat = "count", position = position_dodge(), fill = "skyblue4") +
       geom_text(stat = "count", aes(label = ..count..), position = position_stack(0.5), colour = "black") +
-      labs(y = "Count") +
+      labs(x="",
+        y = "Count") +
       theme_bw()+
       theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
       ggtitle("Awareness of options for seeking help") +
@@ -157,13 +163,14 @@ server <- function(input, output) {
       geom_text(stat = "count", aes(label = ..count..), position = position_stack(0.5) , colour = "black") +
       guides(fill = guide_legend(reverse = TRUE)) +
       scale_fill_manual(values = alpha(c("lightblue","steelblue4")))+
-      labs(x = "History of mental health disorder",
+      labs(#x = "History of mental health disorder",
+           x="",
            y = "Count") +
       theme_bw() +
       theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())+     #Removed grid
       ggtitle("Sought professional help for mental health") +
       theme(plot.title = element_text(size = 14, face = "bold", hjust = 0.5)) +
-      theme(axis.text.x = element_text(size = 14, angle = 25, vjust = 1),
+      theme(axis.text.x = element_text(size = 11.5, angle = 0, vjust = 1),
             axis.text.y = element_text(size = 14),
             axis.title = element_text(size = 14,face = "bold")) + 
       theme(legend.text = element_text(size = 12)) 
@@ -176,13 +183,14 @@ server <- function(input, output) {
       geom_text(stat = "count", aes(label = ..count..), position = position_stack(0.5), colour = "black") +
       guides(fill = guide_legend(reverse = TRUE)) +
       scale_fill_manual(values = alpha(c("lightblue","steelblue4")))+
-      labs(x = "History of mental health disorder",
+      labs(#x = "History of mental health disorder",
+           x="",
            y = "Count") +
       theme_bw() +
       theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())+     #Removed grid
       ggtitle("Clinically diagnosed with a mental health disorder") +
       theme(plot.title = element_text(size = 14, face = "bold", hjust = 0.5)) +
-      theme(axis.text.x = element_text(size = 14, angle = 25, vjust = 1),
+      theme(axis.text.x = element_text(size = 11.5, angle = 0, vjust = 1),
             axis.text.y = element_text(size = 14),
             axis.title = element_text(size = 14,face="bold")) + 
       theme(legend.text = element_text(size = 12))
@@ -193,13 +201,14 @@ server <- function(input, output) {
     ggplot(aes(x = wrk_interference_when_treated)) +
       geom_bar(stat = "count", position = position_dodge(), fill = "lightsteelblue3") +
       geom_text(stat = "count", aes(label = ..count..), position = position_stack(0.5), colour = "black") +
-      labs(x = "Effect in work",
+      labs(#x = "Effect in work",
+           x="",
            y = "Count") +
       theme_bw() +
       theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())+
       ggtitle("Working interference when treated") +
       theme(plot.title = element_text(size = 14, face = "bold", hjust = 0.5)) +
-      theme(axis.text.x = element_text(size = 14, angle = 25, vjust = 1),
+      theme(axis.text.x = element_text(size = 11.5, angle = 0, vjust = 1),
             axis.text.y = element_text(size = 14),
             axis.title = element_text(size = 14,face = "bold")) + 
       theme(legend.text = element_text(size = 12))
@@ -210,24 +219,27 @@ server <- function(input, output) {
     ggplot(aes(x = wrk_interference_No_treatement)) +
       geom_bar(stat = "count", position = position_dodge(), fill = "lightsteelblue3") +
       geom_text(stat = "count", aes(label = ..count..), position = position_stack(0.5), colour = "black") +
-      labs(x = "Effect in work",
+      labs(#x = "Effect in work",
+           x="",
            y = "Count") +
       ggtitle("Working interference when not treated") +
       theme_bw() +
       theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
       theme(plot.title = element_text(size = 14, face = "bold", hjust = 0.5)) +
-      theme(axis.text.x = element_text(size = 14, angle = 25, vjust = 1),
+      theme(axis.text.x = element_text(size = 11.5, angle = 0, vjust = 1),
             axis.text.y = element_text(size = 14),
             axis.title = element_text(size = 14,face ="bold")) + 
       theme(legend.text = element_text(size = 12))
      ) 
   
-  output$table <- renderTable(plot1_filtered() #Data
-                                )
+
   output$mytable = DT::renderDataTable({
     plot1_filtered()
   })
   
+  observe(toggle(id = "age", condition = ifelse(input$tab == 'Usage', FALSE, TRUE)))
+  observe(toggle(id = "countryInput", condition = ifelse(input$tab == 'Usage', FALSE, TRUE)))
+
 }
 
 # Run the application
