@@ -18,12 +18,12 @@ library(DT)
 
 df <- read.csv("data/mental-heath-in-tech.csv", stringsAsFactors = FALSE)
 
-countries <- as.list(unique(df$work_country))
+countries <- as.list(unique(arrange(df, work_country)$work_country))
 
 
 # Define UI for application that draws a histogram
-ui <- fluidPage(theme=shinytheme("lumen"),
-  titlePanel("Mental Health Issue Tracker for Tech company"),
+ui <- fluidPage(theme = shinytheme("lumen"),
+  titlePanel("Mental Health Issue Tracker"),
   sidebarLayout(
     sidebarPanel(width = 3,
                 tags$head(tags$style("#textOutput{color: red;
@@ -37,27 +37,27 @@ ui <- fluidPage(theme=shinytheme("lumen"),
       ),
       selectInput("countryInput", label = "Country",
                   choices = countries,
-                  selected = 1)
+                  selected = 'Canada')
       
     ),
     mainPanel(width = 8,
       tabsetPanel(type="tabs",
                   tabPanel("Usage",align="left",tags$hr(),
-                           h3("Motivation:", 
+                           h3("Motivation", 
                            style ="font-weight:bold; color:grey"),
-                           p('This app is build for tech employers to understand how much the employees are aware of benefits given to them for mental health issue. This gives the visualisation of survey data which helps employer to decide what should be the enhancement in benefits , awareness methods and changes in company policies in regards of mental health issues.'),tags$hr(),
-                           h3("Overview Tab:", 
+                           p('This app is built for tech employers to understand how much the employees are aware of benefits given to them for mental health issues. It enables the visualization of survey data which helps the employer make decision about what enhancements should be made to benefits provided, awareness methods and changes in company policies in regards to mental health issues.'),tags$hr(),
+                           h3("Overview", 
                               style ="font-weight:bold; color:grey"),
-                           p('This shows the most prevalent mental helath conditions diagnosed among employers. Also it shows how many employers are aware of mental health benefits provided by the company. This can be filtered with respect to Age and Country.'),tags$hr(),
-                           h3("Analysis Tab:", 
+                           p('This tab shows the most prevalent mental health conditions diagnosed among employees. Also it shows how many employees are aware of mental health benefits provided by the company. This can be filtered with respect to Age and Country.'),tags$hr(),
+                           h3("Analysis", 
                               style ="font-weight:bold; color:grey"),
-                           p('This shows mental history and current state of health with respect to treatment sught from professional and how many employees are diagnosed by prefoessionals.This tab enables employers to notice how much the health issue is affecting their performance when treated compared to when they do not receive any treatment.All information could be filetered by Age and Country of their work.'),tags$hr(),                            
-                          h3("Data Tab:", 
+                           p('This tab shows mental history and current state of health with respect to treatment sought from professionals and how many employees are diagnosed by professionals. This tab also enables employers to notice how much health issues are affecting their employees\' performance when treated, compared to when they do not receive any treatment. All information can be filtered by Age and Country of work.'),tags$hr(),                            
+                          h3("Data", 
                               style ="font-weight:bold; color:grey"),
-                           p('Overview of the raw data with respect to the filter applied.'),tags$hr()
+                           p('Overview of the raw data with respect to the filters applied.'),tags$hr()
                            
                   ),
-                  tabPanel("Overview",align="center",h3("...   Most prevalent conditions diagnosed were ...", 
+                  tabPanel("Overview",align="center",h3("The most prevalent conditions diagnosed were...", 
                                                         style ="font-weight:bold; color:grey"),
                            wordcloud2Output("wordplot", width = "80%", height = "300px"),
                            tags$hr(),
