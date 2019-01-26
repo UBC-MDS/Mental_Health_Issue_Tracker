@@ -59,7 +59,7 @@ ui <- fluidPage(theme = shinytheme("lumen"),
                   ),
                   tabPanel("Overview",align="center",h3("The most prevalent conditions diagnosed were...", 
                                                         style ="font-weight:bold; color:grey"),
-                           wordcloud2Output("wordplot", width = "80%", height = "300px"),
+                           wordcloud2Output("wordcloud", width = "80%", height = "300px"),
                            tags$hr(),
                            fluidRow(
                              splitLayout(#cellWidths = c("50%", "50%"),
@@ -129,7 +129,7 @@ server <- function(input, output) {
     arrange(desc(freq))
   )
   
-  output$wordplot <- renderWordcloud2(
+  output$wordcloud <- renderWordcloud2(
     word_cloud() %>%
     wordcloud2(size = 0.32, minRotation = 0, maxRotation = 0, 
                shape = "circle", fontWeight = "normal", fontFamily = "CMU Sans Serif", color="random-dark"))
@@ -137,7 +137,7 @@ server <- function(input, output) {
   output$help <- renderPlot(
     plot1_filtered()%>%
     ggplot(aes(x = options_for_seeking_help)) +
-      geom_bar(stat = "count", position = position_dodge(), fill = "skyblue4") +
+      geom_bar(stat = "count", position = position_dodge(), fill = "lightsteelblue3") +
       geom_text(stat = "count", aes(label = ..count..), position = position_stack(0.5), colour = "black") +
       labs(y = "Count") +
       theme_bw()+
