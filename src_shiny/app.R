@@ -49,16 +49,16 @@ ui <- fluidPage(
                            align="left",
                            tags$hr(),
                  
-                           h3("Motivation:", 
+                           h3("Motivation", 
                            style ="font-weight:bold; color:grey"),
-                           p('This app is build for tech employers to understand how much the employees are aware of benefits given to them for mental health issue. This gives the visualisation of survey data which helps employer to decide what should be the enhancement in benefits , awareness methods and changes in company policies in regards of mental health issues.'),tags$hr(),
-                           h3("Overview Tab:", 
+                           p('This app is built for tech employers to understand how much the employees are aware of benefits given to them for mental health issue. This gives the visualisation of survey data which helps employer to decide what should be the enhancement in benefits , awareness methods and changes in company policies in regards of mental health issues.'),tags$hr(),
+                           h3("Overview", 
                               style ="font-weight:bold; color:grey"),
-                           p('This shows the most prevalent mental helath conditions diagnosed among employers. Also it shows how many employers are aware of mental health benefits provided by the company. This can be filtered with respect to Age and Country.'),tags$hr(),
-                           h3("Analysis Tab:", 
+                           p('This tab shows the most prevalent mental helath conditions diagnosed among employers. Also it shows how many employers are aware of mental health benefits provided by the company. This can be filtered with respect to Age and Country.'),tags$hr(),
+                           h3("Analysis", 
                               style ="font-weight:bold; color:grey"),
-                           p('This shows mental history and current state of health with respect to treatment sught from professional and how many employees are diagnosed by prefoessionals.This tab enables employers to notice how much the health issue is affecting their performance when treated compared to when they do not receive any treatment.All information could be filetered by Age and Country of their work.'),tags$hr(),                            
-                          h3("Data Tab:", 
+                           p('This tab shows mental history and current state of health with respect to treatment sught from professional and how many employees are diagnosed by prefoessionals.This tab enables employers to notice how much the health issue is affecting their performance when treated compared to when they do not receive any treatment.All information could be filetered by Age and Country of their work.'),tags$hr(),                            
+                          h3("Data", 
                               style ="font-weight:bold; color:grey"),
                            p('Overview of the raw data with respect to the filter applied.'),tags$hr()
                            
@@ -68,8 +68,7 @@ ui <- fluidPage(
                            wordcloud2Output("wordplot", width = "80%", height = "300px"),
                            tags$hr(),
                            fluidRow(
-                             splitLayout(#cellWidths = c("50%", "50%"),
-                                         #plotOutput("scary",width = "100%",height = "360px"),
+                             splitLayout(
                                          plotOutput("help",width = "70%",height = "360px")
                                          
                                          )
