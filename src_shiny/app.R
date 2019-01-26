@@ -36,8 +36,8 @@ ui <- fluidPage(theme = shinytheme("lumen"),
                   min = 10, max = 100, value = c(20, 35)
       ),
       selectInput("countryInput", label = "Country",
-                  choices = countries,
-                  selected = 'Canada')
+                  choices = c('All', countries),
+                  selected = 'All')
       
     ),
     mainPanel(width = 8,
@@ -118,11 +118,11 @@ server <- function(input, output) {
   
   plot1_filtered  <-reactive(data %>%      
                             filter(between(Age, input$age[1], input$age[2]),
-                                   work_country==input$countryInput))
+                                   input$countryInput == 'All' | work_country==input$countryInput))
   
 
   word_cloud <- reactive(main_conditions %>% 
-    filter(between(Age, input$age[1], input$age[2]), work_country == input$countryInput) %>% 
+    filter(between(Age, input$age[1], input$age[2]), input$countryInput == 'All' | work_country==input$countryInput) %>% 
     count(Condition) %>%
     setNames(c("word", "freq")) %>%
     mutate(freq = log(freq + 1)) %>% 
@@ -139,13 +139,13 @@ server <- function(input, output) {
     ggplot(aes(x = options_for_seeking_help)) +
       geom_bar(stat = "count", position = position_dodge(), fill = "lightsteelblue3") +
       geom_text(stat = "count", aes(label = ..count..), position = position_stack(0.5), colour = "black") +
-      labs(y = "Count") +
+      labs(x = "", y = "Count") +
       theme_bw()+
       theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
       ggtitle("Awareness of options for seeking help") +
-      theme(plot.title = element_text(size = 14, face = "bold", hjust = 0.5)) +
-      theme(axis.text = element_text(size = 14),
-            axis.title = element_text(size = 14,face="bold")) + 
+      theme(plot.title = element_text(size = 17, face = "bold", hjust = 0.5)) +
+      theme(axis.text = element_text(size = 13),
+            axis.title = element_text(size = 15)) + 
       theme(legend.text=element_text(size = 12))
   )
 
@@ -157,15 +157,16 @@ server <- function(input, output) {
       geom_text(stat = "count", aes(label = ..count..), position = position_stack(0.5) , colour = "black") +
       guides(fill = guide_legend(reverse = TRUE)) +
       scale_fill_manual(values = alpha(c("lightblue","steelblue4")))+
-      labs(x = "History of mental health disorder",
-           y = "Count") +
+      labs(x = "(History of mental health disorder)",
+           y = "Count",
+           fill = "Sought Help") +
       theme_bw() +
-      theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())+     #Removed grid
+      theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())+     
       ggtitle("Sought professional help for mental health") +
-      theme(plot.title = element_text(size = 14, face = "bold", hjust = 0.5)) +
-      theme(axis.text.x = element_text(size = 14, angle = 25, vjust = 1),
-            axis.text.y = element_text(size = 14),
-            axis.title = element_text(size = 14,face = "bold")) + 
+      theme(plot.title = element_text(size = 16, face = "bold", hjust = 0.5)) +
+      theme(axis.text.x = element_text(size = 13, angle = 30, margin = margin(20, 0, -20, 0)),
+            axis.text.y = element_text(size = 13),
+            axis.title = element_text(size = 14)) + 
       theme(legend.text = element_text(size = 12)) 
     )
   
@@ -176,15 +177,16 @@ server <- function(input, output) {
       geom_text(stat = "count", aes(label = ..count..), position = position_stack(0.5), colour = "black") +
       guides(fill = guide_legend(reverse = TRUE)) +
       scale_fill_manual(values = alpha(c("lightblue","steelblue4")))+
-      labs(x = "History of mental health disorder",
-           y = "Count") +
+      labs(x = "(History of mental health disorder)",
+           y = "Count",
+           fill = "Clinically Diagnosed") +
       theme_bw() +
       theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())+     #Removed grid
       ggtitle("Clinically diagnosed with a mental health disorder") +
-      theme(plot.title = element_text(size = 14, face = "bold", hjust = 0.5)) +
-      theme(axis.text.x = element_text(size = 14, angle = 25, vjust = 1),
-            axis.text.y = element_text(size = 14),
-            axis.title = element_text(size = 14,face="bold")) + 
+      theme(plot.title = element_text(size = 16, face = "bold", hjust = 0.5)) +
+      theme(axis.text.x = element_text(size = 13, angle = 30, margin = margin(20, 0, -20, 0)),
+            axis.text.y = element_text(size = 13),
+            axis.title = element_text(size = 14)) + 
       theme(legend.text = element_text(size = 12))
     )
   
@@ -193,16 +195,15 @@ server <- function(input, output) {
     ggplot(aes(x = wrk_interference_when_treated)) +
       geom_bar(stat = "count", position = position_dodge(), fill = "lightsteelblue3") +
       geom_text(stat = "count", aes(label = ..count..), position = position_stack(0.5), colour = "black") +
-      labs(x = "Effect in work",
+      labs(x = "",
            y = "Count") +
       theme_bw() +
       theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())+
       ggtitle("Working interference when treated") +
-      theme(plot.title = element_text(size = 14, face = "bold", hjust = 0.5)) +
-      theme(axis.text.x = element_text(size = 14, angle = 25, vjust = 1),
-            axis.text.y = element_text(size = 14),
-            axis.title = element_text(size = 14,face = "bold")) + 
-      theme(legend.text = element_text(size = 12))
+      theme(plot.title = element_text(size = 16, face = "bold", hjust = 0.5)) +
+      theme(axis.text.x = element_text(size = 13, angle = 45, margin = margin(20, 0, -20, 0)),
+            axis.text.y = element_text(size = 13),
+            axis.title = element_text(size = 14))
     )
   
   output$working_impact2 <- renderPlot(
@@ -210,16 +211,15 @@ server <- function(input, output) {
     ggplot(aes(x = wrk_interference_No_treatement)) +
       geom_bar(stat = "count", position = position_dodge(), fill = "lightsteelblue3") +
       geom_text(stat = "count", aes(label = ..count..), position = position_stack(0.5), colour = "black") +
-      labs(x = "Effect in work",
+      labs(x = "",
            y = "Count") +
       ggtitle("Working interference when not treated") +
       theme_bw() +
       theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
-      theme(plot.title = element_text(size = 14, face = "bold", hjust = 0.5)) +
-      theme(axis.text.x = element_text(size = 14, angle = 25, vjust = 1),
-            axis.text.y = element_text(size = 14),
-            axis.title = element_text(size = 14,face ="bold")) + 
-      theme(legend.text = element_text(size = 12))
+      theme(plot.title = element_text(size = 16, face = "bold", hjust = 0.5)) +
+      theme(axis.text.x = element_text(size = 13, angle = 45, margin = margin(20, 0, -20, 0)),
+            axis.text.y = element_text(size = 13),
+            axis.title = element_text(size = 14))
      ) 
   
   output$table <- renderTable(plot1_filtered() #Data
