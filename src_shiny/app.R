@@ -16,97 +16,106 @@ library(gridExtra)
 library(shinythemes)
 library(DT)
 library(shinyjs)
+#library(plyr)
+library(shinycssloaders)
 
 df <- read.csv("data/mental-heath-in-tech.csv", stringsAsFactors = FALSE)
 
-countries <- as.list(unique(arrange(df, work_country)$work_country))
+#countries <- as.list(unique(arrange(df, work_country)$work_country))
+countries <- as.list(unique(arrange(df, Country)$Country))
+gender <- as.list(unique(arrange(df, Gender)$Gender))
 
-
-# Define UI for application that draws a histogram
+# Define UI for application
 ui <- fluidPage(
   useShinyjs(),
-  theme=shinytheme("lumen"),
-  titlePanel("Mental Health Issue Tracker for Tech company"),
+  theme = shinytheme("lumen"),
+  titlePanel("Tech Mental Health Issue Tracker"),
   sidebarLayout(
     sidebarPanel(width = 3,
-                tags$head(tags$style("#textOutput{color: red;
-                             font-size: 20px;
+                 tags$head(tags$style("#textOutput{color: red;
+                                      font-size: 20px;
                                       font-style: italic;
                                       }"
                      )
                  ),
-      sliderInput("age", "Age",
-                  min = 10, max = 100, value = c(20, 45)
-      ),
-      selectInput("countryInput", label = "Country",
-                  choices = c('All', countries),
-                  selected = 'All')
-      
-    ),
-    mainPanel(width = 8,
-      tabsetPanel(type="tabs",id="tab",
-                  tabPanel("Usage",
-                           align="left",
-                           tags$hr(),
+                 sliderInput("age", "Age",
+                             min = 10, max = 100, value = c(20, 45)),
                  
-                           h3("Motivation", 
-                           style ="font-weight:bold; color:grey"),
-                           p('This app is built for tech employers to understand how much the employees are aware of benefits given to them for mental health issue. This gives the visualisation of survey data which helps employer to decide what should be the enhancement in benefits , awareness methods and changes in company policies in regards of mental health issues.'),tags$hr(),
-                           h3("Overview", 
-                              style ="font-weight:bold; color:grey"),
-                           p('This tab shows the most prevalent mental helath conditions diagnosed among employers. Also it shows how many employers are aware of mental health benefits provided by the company. This can be filtered with respect to Age and Country.'),tags$hr(),
-                           h3("Analysis", 
-                              style ="font-weight:bold; color:grey"),
-                           p('This tab shows mental history and current state of health with respect to treatment sught from professional and how many employees are diagnosed by prefoessionals.This tab enables employers to notice how much the health issue is affecting their performance when treated compared to when they do not receive any treatment.All information could be filetered by Age and Country of their work.'),tags$hr(),                            
-                          h3("Data", 
-                              style ="font-weight:bold; color:grey"),
-                           p('Overview of the raw data with respect to the filter applied.'),tags$hr()
-                           
-                  ),
-                  tabPanel("Overview",align="center",h3("The most prevalent conditions diagnosed were...", 
-                                                        style ="font-weight:bold; color:grey"),
-                           wordcloud2Output("wordplot", width = "80%", height = "300px"),
-                           tags$hr(),
-                           fluidRow(
-                             splitLayout(
-                                         plotOutput("help",width = "70%",height = "360px")
-                                         
-                                         )
-                                           
-                           )
-                  ),
-                           
-                  tabPanel("Analysis",
-                           fluidRow(
-                             splitLayout(cellWidths = c("50%", "50%"), 
-                                         plotOutput("MHID",width = "100.01%",height = "360px"), 
-                                         plotOutput("diagnosis",width = "100.01%",height = "360px"))
-                           ),
-                           tags$hr(),
-                           fluidRow(
-                           splitLayout(cellWidths = c("50%", "50%"), 
-                                       plotOutput("working_impact1",width = "75%",height = "375px"), 
-                                       plotOutput("working_impact2",width = "75%",height = "375px"))
-                           )
-                  ),
-                  tabPanel("Data",
-                           DT::dataTableOutput("mytable")
-                             
-                           
-                  )
-      )
-      
+                 selectInput("countryInput", label = "Country",
+                             choices = c('All', countries),
+                             selected = 'All'),
+                 
+                 selectInput("genderInput", label = "Gender",
+                             choices = c('All', gender),
+                             selected = 'All')
+                 ),
+    
+    mainPanel(width = 8,
+              tabsetPanel(type="tabs",id="tab",
+                          tabPanel("Usage",
+                                   align="left",
+                                   tags$hr(),
+                                   
+                                   h3("Motivation", 
+                                      style ="font-weight:bold; color:grey"),
+                                   p('This app is built for tech employers to understand how much the employees are aware of benefits given to them for mental health issue. This gives the visualisation of survey data which helps employer to decide what should be the enhancement in benefits , awareness methods and changes in company policies in regards of mental health issues.'),tags$hr(),
+                                   h3("Overview", 
+                                      style ="font-weight:bold; color:grey"),
+                                   p('This tab shows the most prevalent mental helath conditions diagnosed among employers. Also it shows how many employers are aware of mental health benefits provided by the company. This can be filtered with respect to Age and Country.'),tags$hr(),
+                                   h3("Analysis", 
+                                      style ="font-weight:bold; color:grey"),
+                                   p('This tab shows mental history and current state of health with respect to treatment sught from professional and how many employees are diagnosed by prefoessionals.This tab enables employers to notice how much the health issue is affecting their performance when treated compared to when they do not receive any treatment.All information could be filetered by Age and Country of their work.'),tags$hr(),                            
+                                   h3("Data", 
+                                      style ="font-weight:bold; color:grey"),
+                                   p('Overview of the raw data with respect to the filter applied.'),tags$hr()
+                                   
+                          ),
+                          
+                          tabPanel("Overview",align="center",h3("The most prevalent conditions diagnosed were...", 
+                                                                style ="font-weight:bold; color:grey"),
+                                   withSpinner(wordcloud2Output("wordplot", width = "80%", height = "300px")),
+                                   tags$hr(),
+                                   fluidRow(
+                                     splitLayout(
+                                       withSpinner(plotOutput("help",width = "70%",height = "360px"))
+                                       
+                                     )
+                                     
+                                   )
+                          ),
+                          
+                          tabPanel("Analysis",
+                                   fluidRow(
+                                     splitLayout(cellWidths = c("50%", "50%"), 
+                                                 withSpinner(plotOutput("MHID",width = "auto",height = "360px")), 
+                                                 withSpinner(plotOutput("diagnosis",width = "auto",height = "360px")))
+                                   ),
+                                   tags$hr(),
+                                   fluidRow(
+                                     splitLayout(cellWidths = c("50%", "50%"), 
+                                                 withSpinner(plotOutput("working_impact1",width = "75%",height = "375px")), 
+                                                 withSpinner(plotOutput("working_impact2",width = "75%",height = "375px")))
+                                   )
+                          ),
+                          tabPanel("Data",
+                                   withSpinner(DT::dataTableOutput("mytable"))
+                                   
+                                   
+                          )
+              )
+              
+    )
     )
   )
-)
 
 
 # Define server logic required to draw a plot
 server <- function(input, output) {
-
-# Overview's charts 
+  
+  # Overview's charts 
   main_conditions <- df %>% 
-    select(Condition, Age, work_country) %>% 
+    #select(Condition, Age, work_country) %>% 
+    select(Condition, Age, Country, Gender) %>% 
     mutate(Condition = as.character(Condition)) %>% 
     mutate(Condition = tolower(Condition)) %>%
     mutate(Condition = gsub("\\s*\\([^\\)]+\\)", "", Condition)) %>%
@@ -114,37 +123,40 @@ server <- function(input, output) {
     mutate(Condition = strsplit(Condition, "|", fixed = TRUE)) %>%
     unnest(Condition)
   
-  data<-df %>%
-    select(Condition, Age, work_country,options_for_seeking_help,
-           scared_of_discussing_with_employer,Treatment_sought,
-           Clinically_diagnosed,wrk_interference_when_treated,wrk_interference_No_treatement,MHD)
+  View(main_conditions)
   
+  data<-df %>%
+    select(Condition, Age, Country,options_for_seeking_help,
+           scared_of_discussing_with_employer,Treatment_sought,Gender,
+           Clinically_diagnosed,wrk_interference_when_treated,wrk_interference_No_treatement,MHD)
   
   plot1_filtered  <-reactive(data %>%      
                                filter(between(Age, input$age[1], input$age[2]),
-                                      input$countryInput == 'All' | work_country==input$countryInput))
+                                      #input$countryInput == 'All' | work_country == input$countryInput))
+                                      input$countryInput == 'All' | Country == input$countryInput,
+                                      input$genderInput == 'All' | Gender==input$genderInput))
   
-
+  
   word_cloud <- reactive(main_conditions %>% 
-    filter(between(Age, input$age[1], input$age[2]), input$countryInput == 'All' | work_country==input$countryInput) %>% 
-    count(Condition) %>%
-    setNames(c("word", "freq")) %>%
-    mutate(freq = log(freq + 1)) %>% 
-    arrange(desc(freq))
+                           filter(between(Age, input$age[1], input$age[2]), input$countryInput == 'All' | Country == input$countryInput,input$genderInput == 'All' | Gender==input$genderInput) %>% 
+                           count(Condition) %>%
+                           setNames(c("word", "freq")) %>%
+                           mutate(freq = log(freq + 1)) %>% 
+                           arrange(desc(freq))
   )
   
   output$wordplot <- renderWordcloud2(
     word_cloud() %>%
-    wordcloud2(size = 0.32, minRotation = 0, maxRotation = 0, 
-               shape = "circle", fontWeight = "normal", fontFamily = "CMU Sans Serif", color="random-dark"))
+      wordcloud2(size = 0.32, minRotation = 0, maxRotation = 0, 
+                 shape = "circle", fontWeight = "normal", fontFamily = "CMU Sans Serif", color="random-dark"))
   
   output$help <- renderPlot(
     plot1_filtered()%>%
-    ggplot(aes(x = options_for_seeking_help)) +
+      ggplot(aes(x = options_for_seeking_help)) +
       geom_bar(stat = "count", position = position_dodge(), fill = "skyblue4") +
       geom_text(stat = "count", aes(label = ..count..), position = position_stack(0.5), colour = "black") +
       labs(x="",
-        y = "Count") +
+           y = "Count") +
       theme_bw()+
       theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
       ggtitle("Awareness of options for seeking help") +
@@ -153,18 +165,18 @@ server <- function(input, output) {
             axis.title = element_text(size = 14,face="bold")) + 
       theme(legend.text=element_text(size = 12))
   )
-
-# Details' charts  
+  
+  # Details' charts  
   output$MHID <- renderPlot(
     plot1_filtered()%>%
-    ggplot(aes(x = MHD, fill = Treatment_sought)) +
+      ggplot(aes(x = MHD, fill = Treatment_sought)) +
       geom_bar(stat = "count") +
       geom_text(stat = "count", aes(label = ..count..), position = position_stack(0.5) , colour = "black") +
       guides(fill = guide_legend(reverse = TRUE)) +
       scale_fill_manual(values = alpha(c("lightblue","steelblue4")))+
-      labs(#x = "History of mental health disorder",
-           x="",
-           y = "Count") +
+      labs(x="",
+           y = "Count",
+           fill = "Sought Help") +
       theme_bw() +
       theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())+     #Removed grid
       ggtitle("Sought professional help for mental health") +
@@ -173,18 +185,18 @@ server <- function(input, output) {
             axis.text.y = element_text(size = 14),
             axis.title = element_text(size = 14,face = "bold")) + 
       theme(legend.text = element_text(size = 12)) 
-    )
+  )
   
   output$diagnosis <- renderPlot(
     plot1_filtered()%>%
-    ggplot(aes(x = MHD, fill = Clinically_diagnosed)) +
+      ggplot(aes(x = MHD, fill = Clinically_diagnosed)) +
       geom_bar(stat = "count") +
       geom_text(stat = "count", aes(label = ..count..), position = position_stack(0.5), colour = "black") +
       guides(fill = guide_legend(reverse = TRUE)) +
       scale_fill_manual(values = alpha(c("lightblue","steelblue4")))+
-      labs(#x = "History of mental health disorder",
-           x="",
-           y = "Count") +
+      labs(x="",
+           y = "Count",
+           fill = "Clinically Diagnosed") +
       theme_bw() +
       theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())+     #Removed grid
       ggtitle("Clinically diagnosed with a mental health disorder") +
@@ -193,15 +205,14 @@ server <- function(input, output) {
             axis.text.y = element_text(size = 14),
             axis.title = element_text(size = 14,face="bold")) + 
       theme(legend.text = element_text(size = 12))
-    )
+  )
   
   output$working_impact1 <- renderPlot(
     plot1_filtered()%>%
-    ggplot(aes(x = wrk_interference_when_treated)) +
+      ggplot(aes(x = wrk_interference_when_treated)) +
       geom_bar(stat = "count", position = position_dodge(), fill = "lightsteelblue3") +
       geom_text(stat = "count", aes(label = ..count..), position = position_stack(0.5), colour = "black") +
-      labs(#x = "Effect in work",
-           x="",
+      labs(x="",
            y = "Count") +
       theme_bw() +
       theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())+
@@ -211,15 +222,14 @@ server <- function(input, output) {
             axis.text.y = element_text(size = 14),
             axis.title = element_text(size = 14,face = "bold")) + 
       theme(legend.text = element_text(size = 12))
-    )
+  )
   
   output$working_impact2 <- renderPlot(
     plot1_filtered()%>%
-    ggplot(aes(x = wrk_interference_No_treatement)) +
+      ggplot(aes(x = wrk_interference_No_treatement)) +
       geom_bar(stat = "count", position = position_dodge(), fill = "lightsteelblue3") +
       geom_text(stat = "count", aes(label = ..count..), position = position_stack(0.5), colour = "black") +
-      labs(#x = "Effect in work",
-           x="",
+      labs(x="",
            y = "Count") +
       ggtitle("Working interference when not treated") +
       theme_bw() +
@@ -229,16 +239,31 @@ server <- function(input, output) {
             axis.text.y = element_text(size = 14),
             axis.title = element_text(size = 14,face ="bold")) + 
       theme(legend.text = element_text(size = 12))
-     ) 
+  ) 
   
-
+  
+  
+  # Rename the variables in analysis
+  # df_renamed <- df %>% 
+  #  rename(c("options_for_seeking_help" = "Awareness of options for seeking help",
+  #          "Treatment_sought" = "Sought Help",
+  #         "Clinically_diagnosed" = "Clinically Diagnosed",
+  #        "wrk_interference_when_treated" = "Working Interference When Treated",
+  #       "wrk_interference_No_treatement" = "Working Interference When Not Treated",
+  #      "MHD" = "History of Mental Health Disorder"))
+  
+  #data <- df_renamed %>%
+  # select(Condition, Age, Country,"Awareness of options for seeking help", "Sought Help", "Clinically Diagnosed",
+  #       "Working Interference When Treated", "Working Interference When Not Treated", "History of Mental Health Disorder")
+  
   output$mytable = DT::renderDataTable({
     plot1_filtered()
   })
   
   observe(toggle(id = "age", condition = ifelse(input$tab == 'Usage', FALSE, TRUE)))
   observe(toggle(id = "countryInput", condition = ifelse(input$tab == 'Usage', FALSE, TRUE)))
-
+  observe(toggle(id = "genderInput", condition = ifelse(input$tab == 'Usage', FALSE, TRUE)))
+  
 }
 
 # Run the application
