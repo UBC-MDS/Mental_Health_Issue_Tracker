@@ -16,7 +16,6 @@ library(gridExtra)
 library(shinythemes)
 library(DT)
 library(shinyjs)
-#library(plyr)
 library(shinycssloaders)
 
 df <- read.csv("data/mental-heath-in-tech.csv", stringsAsFactors = FALSE)
@@ -114,7 +113,6 @@ server <- function(input, output) {
   
   # Overview's charts 
   main_conditions <- df %>% 
-    #select(Condition, Age, work_country) %>% 
     select(Condition, Age, Country, Gender) %>% 
     mutate(Condition = as.character(Condition)) %>% 
     mutate(Condition = tolower(Condition)) %>%
@@ -123,16 +121,13 @@ server <- function(input, output) {
     mutate(Condition = strsplit(Condition, "|", fixed = TRUE)) %>%
     unnest(Condition)
   
-  View(main_conditions)
-  
-  data<-df %>%
+  data <- df %>%
     select(Condition, Age, Country,options_for_seeking_help,
-           scared_of_discussing_with_employer,Treatment_sought,Gender,
-           Clinically_diagnosed,wrk_interference_when_treated,wrk_interference_No_treatement,MHD)
+           Treatment_sought,Gender, Clinically_diagnosed,
+           wrk_interference_when_treated, wrk_interference_No_treatement, MHD)
   
-  plot1_filtered  <-reactive(data %>%      
+  plot1_filtered <- reactive(data %>%      
                                filter(between(Age, input$age[1], input$age[2]),
-                                      #input$countryInput == 'All' | work_country == input$countryInput))
                                       input$countryInput == 'All' | Country == input$countryInput,
                                       input$genderInput == 'All' | Gender==input$genderInput))
   
@@ -241,29 +236,18 @@ server <- function(input, output) {
       theme(legend.text = element_text(size = 12))
   ) 
   
-  
-  
-  # Rename the variables in analysis
-  # df_renamed <- df %>% 
-  #  rename(c("options_for_seeking_help" = "Awareness of options for seeking help",
-  #          "Treatment_sought" = "Sought Help",
-  #         "Clinically_diagnosed" = "Clinically Diagnosed",
-  #        "wrk_interference_when_treated" = "Working Interference When Treated",
-  #       "wrk_interference_No_treatement" = "Working Interference When Not Treated",
-  #      "MHD" = "History of Mental Health Disorder"))
-  
-  #data <- df_renamed %>%
-  # select(Condition, Age, Country,"Awareness of options for seeking help", "Sought Help", "Clinically Diagnosed",
-  #       "Working Interference When Treated", "Working Interference When Not Treated", "History of Mental Health Disorder")
-  
   output$mytable = DT::renderDataTable({
-    plot1_filtered()
-  })
+    datatable(plot1_filtered(), colnames = c("Awareness of Options for Seeking Help" = "options_for_seeking_help",
+                                             "Sought Help" = "Treatment_sought",
+                                             "Clinically Diagnosed" = "Clinically_diagnosed",
+                                             "Working Interference When Treated" = "wrk_interference_when_treated",
+                                             "Working Interference When Not Treated" = "wrk_interference_No_treatement",
+                                             "History of Mental Health Disorder" = "MHD"))
+    })
   
   observe(toggle(id = "age", condition = ifelse(input$tab == 'Usage', FALSE, TRUE)))
   observe(toggle(id = "countryInput", condition = ifelse(input$tab == 'Usage', FALSE, TRUE)))
   observe(toggle(id = "genderInput", condition = ifelse(input$tab == 'Usage', FALSE, TRUE)))
-  
 }
 
 # Run the application
