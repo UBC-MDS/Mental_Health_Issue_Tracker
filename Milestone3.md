@@ -1,4 +1,4 @@
-# Mental_Health_Issue_Tracker
+# Milestone 3
 
 Contributors:
 - [Marcelle Chiriboga](https://github.com/mchiriboga)

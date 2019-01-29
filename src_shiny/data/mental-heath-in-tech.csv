@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 ID,No_emp,health_benefits,options_for_mental_health,options_for_seeking_help,Anonymity_if_helped_by_employer,observed_consequences,discuss_mental_health_issue_directsupervisor(s)?,scared_of_discussing_with_employer,identified_with_mentalhealth_hurt_career?,Team_mem_view_negetively,family_hist,MHI_in_past,MHI_currently,Condition,Clinically_diagnosed,"If so, what condition(s) were you diagnosed with?",Treatment_sought,wrk_interference_when_treated,wrk_interference_No_treatement,Age,Gender,work_country,work_position,work_remotely,MHD
+=======
+ID,No_emp,health_benefits,options_for_mental_health,options_for_seeking_help,Anonymity_if_helped_by_employer,observed_consequences,discuss_mental_health_issue_directsupervisor(s)?,scared_of_discussing_with_employer,identified_with_mentalhealth_hurt_career?,Team_mem_view_negetively,family_hist,MHI_in_past,MHI_currently,Condition,Clinically_diagnosed,"If so, what condition(s) were you diagnosed with?",Treatment_sought,wrk_interference_when_treated,wrk_interference_No_treatement,Age,Gender,Country,work_position,work_remotely,MHD
+>>>>>>> upstream/master
 1,26-100,Not eligible for coverage / N/A,N/A,No,I don't know,No,Some of my previous employers,No,Maybe,"No, I don't think they would",No,Yes,No,,Yes,"Anxiety Disorder (Generalized, Social, Phobia, etc)",No,NA,NA,39,Male,United Kingdom,Back-end Developer,Sometimes,Past
 2,43641,No,Yes,Yes,Yes,No,Some of my previous employers,No,"No, I don't think it would","No, I don't think they would",Yes,Yes,Yes,"Anxiety Disorder (Generalized, Social, Phobia, etc)|Mood Disorder (Depression, Bipolar Disorder, etc)",Yes,"Anxiety Disorder (Generalized, Social, Phobia, etc)|Mood Disorder (Depression, Bipolar Disorder, etc)",Yes,Rarely,Sometimes,29,Male,United States of America,Back-end Developer|Front-end Developer,Never,"Past &
 Present"
@@ -1373,4 +1377,8 @@ Present"
 1431,100-500,Yes,Yes,Yes,I don't know,Yes,Some of my previous employers,Maybe,"Yes, it has","No, I don't think they would",Yes,Yes,Maybe,,Yes,"Anxiety Disorder (Generalized, Social, Phobia, etc)|Mood Disorder (Depression, Bipolar Disorder, etc)",Yes,Rarely,Sometimes,52,Male,United States of America,Back-end Developer,Sometimes,"Past &
 Present"
 1433,100-500,Yes,No,No,I don't know,No,,Maybe,"Yes, I think it would","No, I don't think they would",I don't know,Yes,Yes,"Obsessive-Compulsive Disorder|Eating Disorder (Anorexia, Bulimia, etc)|Mood Disorder (Depression, Bipolar Disorder, etc)|Anxiety Disorder (Generalized, Social, Phobia, etc)",No,,No,NA,Often,25,Prefer not to answer,Canada,Other,Sometimes,"Past &
+<<<<<<< HEAD
 Present"
+=======
+Present"
+>>>>>>> upstream/master
