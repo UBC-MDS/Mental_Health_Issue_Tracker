@@ -20,8 +20,10 @@ library(shinycssloaders)
 
 df <- read.csv("data/mental-heath-in-tech.csv", stringsAsFactors = FALSE)
 
-#countries <- as.list(unique(arrange(df, work_country)$work_country))
+# Extract country list choices and order them alphabetically
 countries <- as.list(unique(arrange(df, Country)$Country))
+
+# Extract gender list choices and order them alphabetically
 gender <- as.list(unique(arrange(df, Gender)$Gender))
 
 # Define UI for application
@@ -76,7 +78,7 @@ ui <- fluidPage(
                                    tags$hr(),
                                    fluidRow(
                                      splitLayout(
-                                       withSpinner(plotOutput("help",width = "70%",height = "360px"))
+                                       withSpinner(plotOutput("help", width = "70%", height = "360px"))
                                        
                                      )
                                      
@@ -86,20 +88,18 @@ ui <- fluidPage(
                           tabPanel("Analysis",
                                    fluidRow(
                                      splitLayout(cellWidths = c("50%", "50%"), 
-                                                 withSpinner(plotOutput("MHID",width = "auto",height = "360px")), 
-                                                 withSpinner(plotOutput("diagnosis",width = "auto",height = "360px")))
+                                                 withSpinner(plotOutput("MHID", width = "auto", height = "360px")), 
+                                                 withSpinner(plotOutput("diagnosis", width = "auto", height = "360px")))
                                    ),
                                    tags$hr(),
                                    fluidRow(
                                      splitLayout(cellWidths = c("50%", "50%"), 
-                                                 withSpinner(plotOutput("working_impact1",width = "75%",height = "375px")), 
-                                                 withSpinner(plotOutput("working_impact2",width = "75%",height = "375px")))
+                                                 withSpinner(plotOutput("working_impact1", width = "75%", height = "375px")), 
+                                                 withSpinner(plotOutput("working_impact2", width = "75%", height = "375px")))
                                    )
                           ),
                           tabPanel("Data",
                                    withSpinner(DT::dataTableOutput("mytable"))
-                                   
-                                   
                           )
               )
               
@@ -111,11 +111,12 @@ ui <- fluidPage(
 # Define server logic required to draw a plot
 server <- function(input, output) {
   
-  # Overview's charts 
+  # Wrangle the data to be used to plot a worcloud 
   main_conditions <- df %>% 
     select(Condition, Age, Country, Gender) %>% 
     mutate(Condition = as.character(Condition)) %>% 
     mutate(Condition = tolower(Condition)) %>%
+    # Regular expressions below used to extract individual conditions from survey responses
     mutate(Condition = gsub("\\s*\\([^\\)]+\\)", "", Condition)) %>%
     mutate(Condition = gsub("\\s+-.*", "", Condition)) %>%
     mutate(Condition = strsplit(Condition, "|", fixed = TRUE)) %>%
@@ -126,6 +127,7 @@ server <- function(input, output) {
            Treatment_sought,Gender, Clinically_diagnosed,
            wrk_interference_when_treated, wrk_interference_No_treatement, MHD)
   
+  # Get the reactive for the data after filtering
   plot1_filtered <- reactive(data %>%      
                                filter(between(Age, input$age[1], input$age[2]),
                                       input$countryInput == 'All' | Country == input$countryInput,
@@ -140,6 +142,7 @@ server <- function(input, output) {
                            arrange(desc(freq))
   )
   
+  # Render overview tab plots
   output$wordplot <- renderWordcloud2(
     word_cloud() %>%
       wordcloud2(size = 0.32, minRotation = 0, maxRotation = 0, 
@@ -161,7 +164,7 @@ server <- function(input, output) {
       theme(legend.text=element_text(size = 12))
   )
   
-  # Details' charts  
+  # Render analysis tab plots
   output$MHID <- renderPlot(
     plot1_filtered()%>%
       ggplot(aes(x = MHD, fill = Treatment_sought)) +
@@ -236,6 +239,8 @@ server <- function(input, output) {
       theme(legend.text = element_text(size = 12))
   ) 
   
+  
+  # Render data table
   output$mytable = DT::renderDataTable({
     datatable(plot1_filtered(), colnames = c("Awareness of Options for Seeking Help" = "options_for_seeking_help",
                                              "Sought Help" = "Treatment_sought",
