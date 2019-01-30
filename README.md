@@ -1,6 +1,6 @@
 # Mental_Health_Issue_Tracker
 
-Contributors:
+### Contributors:
 - [Marcelle Chiriboga](https://github.com/mchiriboga)
 - [Sayanti Ghosh](https://github.com/Sayanti86)
 
