@@ -5,15 +5,16 @@
 In this last phase of the project, we needed to decide the last implementations to work on. With this purpose, we first identified all the opportunities, considering the suggestions received from the feedback which we couldn't address on the previous phase for some reason, bugs, and other items we thought could be improved. We ended up with the following wishlist, sorted by priority:
 - Replace original variable names shown on `Data` tab to more meaningful ones
 - Add loading indicator to all visualizations
+- Add gender filter option
 - Automatically adjust chart sizes, proportionally to the window size
 - Fix word cloud so it's plotted correctly for filter selections which result in only one condition reported
 - Add the number of responses for the selected filter options
 - Remove the box which is showing on the sidebar of `Usage` tab
 
-The criteria for prioritizing tasks as above was so that we would address high value and low effort issues first. Specifically, we estimated the first two items would take little effort to implement, while at the same time significantly improving the reading experience in the `Data` tab and making the overall experience nicer and more fluid by adding the loading indicator. In the end, renaming the variables took longer than expected because it took a while to figure out how to use variable names that contained white space properly. We ended up managing to use the `colnames` parameter in the `datatable` function, which allowed us to set display names for the columns without having to rename the underlying variables. Adding the loading indicators was fairly simple. For that, we relied on the package `shinycssloaders`. The final item we managed to address was the automatic adjustment of the chart sizes. This was accomplished by setting the chart widths to `auto` on the `plotOutput` function calls in the UI module.
+The criteria for prioritizing tasks as above was so that we would address high value and low effort issues first. Specifically, we estimated the first two items would take little effort to implement, while at the same time significantly improving the reading experience in the `Data` tab and making the overall experience nicer and more fluid by adding the loading indicator. In the end, renaming the variables took longer than expected because it took a while to figure out how to use variable names that contained whitespace properly. We ended up managing to use the `colnames` parameter in the `datatable` function, which allowed us to set display names for the columns without having to rename the underlying variables. Adding the loading indicators was fairly simple. For that, we relied on the package `shinycssloaders`. We also decided to include a gender filter option since we noticed that the results varied significantly by gender for some analyses. The final item we managed to address was the automatic adjustment of the chart sizes. This was accomplished by setting the chart widths to `auto` on the `plotOutput` function calls in the UI module.
 
 ![](img/data_table.png)
-*Data tab with renamed variables*
+*Data tab with renamed variables and gender filter*
 
 ![](img/loading_indicators.png)
 *Analysis tab with the loading indicators*
