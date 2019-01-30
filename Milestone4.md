@@ -13,7 +13,10 @@ In this last phase of the project, we needed to decide the last implementations 
 The criteria for prioritizing tasks as above was so that we would address high value and low effort issues first. Specifically, we estimated the first two items would take little effort to implement, while at the same time significantly improving the reading experience in the `Data` tab and making the overall experience nicer and more fluid by adding the loading indicator. In the end, renaming the variables took longer than expected because it took a while to figure out how to use variable names that contained white space properly. We ended up managing to use the `colnames` parameter in the `datatable` function, which allowed us to set display names for the columns without having to rename the underlying variables. Adding the loading indicators was fairly simple. For that, we relied on the package `shinycssloaders`. The final item we managed to address was the automatic adjustment of the chart sizes. This was accomplished by setting the chart widths to `auto` on the `plotOutput` function calls in the UI module.
 
 ![](img/data_table.png)
+*Data tab with renamed variables*
+
 ![](img/loading_indicators.png)
+*Analysis tab with the loading indicators*
 
 We found that given the time limit, we wouldn't be able to address the last three items. We previously tried to work on the first and last of them, but found that they required some effort to debug before we could find a fix. As to the number of responses, we figured that it would require design changes, as this information would be better suited on a dashboard panel, which we currently don't have. We thought of adding the information to the side bar as a compromise, but in the end decided against it.
 
