@@ -1,10 +1,5 @@
 # Milestone 2
 
-Contributors:
-- [Marcelle Chiriboga](https://github.com/mchiriboga)
-- [Sayanti Ghosh](https://github.com/Sayanti86)
-
-
 ### Application walkthrough
 
 Our foundation to set up this <a href="https://marcelle-sayanti.shinyapps.io/mental_health_issue_tracker/"> app </a> is to give users an overview of the data with a Summary of the awareness among employees and also to look in Detail and analyze the data which will help the user to build a plan to mitigate the challenge.
