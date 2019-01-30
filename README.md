@@ -17,10 +17,9 @@ In this directory you'll find:
 ### App
 
 - Shiny App file [`app.r`](https://github.com/UBC-MDS/Mental_Health_Issue_Tracker/blob/master/src_shiny/app.R)
-- The app lives online [here](https://marcelle-sayanti.shinyapps.io/mental_health_issue_tracker/)
+- The interactive app can be found [here](https://marcelle-sayanti.shinyapps.io/mental_health_issue_tracker/)
 
 ### Code of Conduct
-
 
 - [Code of Conduct](https://github.com/UBC-MDS/Mental_Health_Issue_Tracker/blob/master/Code_of_conduct.md)
 
