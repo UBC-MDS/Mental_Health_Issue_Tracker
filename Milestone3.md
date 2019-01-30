@@ -1,9 +1,5 @@
 # Milestone 3
 
-Contributors:
-- [Marcelle Chiriboga](https://github.com/mchiriboga)
-- [Sayanti Ghosh](https://github.com/Sayanti86)
-
 ### Reflection on the usefulness of the feedback received
 
 #### Feedback Process
