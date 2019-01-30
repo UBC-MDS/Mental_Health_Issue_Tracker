@@ -21,4 +21,6 @@ In this directory you'll find:
 
 ### Code of Conduct
 
+
 - [Code of Conduct](https://github.com/UBC-MDS/Mental_Health_Issue_Tracker/blob/master/Code_of_conduct.md)
+
