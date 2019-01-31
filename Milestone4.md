@@ -19,7 +19,7 @@ The criteria for prioritizing tasks as above was so that we would address high v
 ![](img/loading_indicators.png)
 *Analysis tab with the loading indicators*
 
-We found that given the time limit, we wouldn't be able to address the last three items. We previously tried to work on the first and last of them, but found that they required some effort to debug before we could find a fix. As to the number of responses, we figured that it would require design changes, as this information would be better suited on a dashboard panel, which we currently don't have. We thought of adding the information to the side bar as a compromise, but in the end decided against it.
+We found that given the time limit, we wouldn't be able to address the last three items. However, the first one was indirectly solved when we limited the country filter options to only countries with more than ten responses. We previously tried to work on the last item, but found that it required some effort to debug before we could find a fix. As to the number of responses, we figured that it would require design changes, as this information would be better suited on a dashboard panel, which we currently don't have. We thought of adding the information to the side bar as a compromise, but in the end decided against it.
 
 ### If you were to make the app again from scratch (or some other app in general), what would you do differently?
 
