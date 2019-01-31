@@ -7,7 +7,7 @@
 
 In this directory you'll find:
 
-### Documents
+### Writeups
 
 - [Milestone 1: Proposal](https://github.com/UBC-MDS/Mental_Health_Issue_Tracker/blob/master/Milestone1.md)
 - [Milestone 2: Purpose & Function](https://github.com/UBC-MDS/Mental_Health_Issue_Tracker/blob/master/Milestone2.md)
